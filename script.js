@@ -28,15 +28,15 @@ VANTA.WAVES({
   
 const imagePaths = [
   "./p2.jpg",
-  "./p5.jpg",
-  "./p8.jpg",
-  "./p6.jpg",
-  "./p10.jpg",
-  "./p11.jpg",
+  "./p5.JPG",
+  "./p8.JPG",
+  "./p6.JPG",
+  "./p10.JPG",
+  "./p11.JPG",
   "./p12.jpg",
   "./p14.jpg",
-  "./p4.jpg",
-  "./m10.jpg"
+  "./p4.JPG"
+  
 ];
 
 const gallery = document.getElementById("slider");
