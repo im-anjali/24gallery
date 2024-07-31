@@ -385,10 +385,7 @@ img {
 /* Navbar */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=VT323&display=swap');
 
-body {
-    background-color: black;
-    font-family: myFont;
-}
+
 
 @font-face {
     font-family: myFont;
@@ -400,6 +397,7 @@ body {
     position: absolute;
     z-index: 999;
     top: 0;
+   font-family: myFont;
 }
 
 .navbar {
