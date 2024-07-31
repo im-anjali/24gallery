@@ -1,0 +1,556 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+/* Reset styles and box-sizing */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* Basic styling for html and body */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  /* overflow-x: hidden; */
+}
+@font-face {
+  font-family: 'nexa';
+  src: url('./NexaRustSans-Trial-Black2.ttf') format('opentype');
+}
+.about {
+  color: aliceblue;
+  font-size: 2.5rem;
+  text-align: center;
+  font-family: 'nexa';
+  text-shadow: 0 0 20px rgba(0, 153, 255, 1), 0 0 30px rgba(0, 153, 255, 0.8), 0 0 40px rgba(0, 153, 255, 0.6);
+}
+#vanta-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100vh;
+}
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(7, 7, 64);
+  display: grid;
+  place-items: center;
+  /* overflow-x: hidden;
+
+  overflow-y: hidden; */
+}
+
+/* Root variables */
+:root {
+  --image-size: 500px;
+}
+
+/* Gallery styling */
+.gallery {
+  max-width: 90%;
+  width: 100%;
+  height: auto; /* Adjust height based on content */
+  position: relative;
+  display: grid;
+}
+
+/* Slider styling */
+.slider {
+  display: flex;
+  position: relative;
+}
+
+/* Wrapper styling */
+.wrapper {
+  position: relative;
+  display: none;
+  transition: transform 0.5s ease-out, left 0.5s ease-out;
+}
+
+.flipped {
+  position: absolute;
+  bottom: calc(-100% - 10px);
+  transform: scaleY(-1);
+}
+
+.wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: calc(-100% - 10px);
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(19, 19, 19, 0.75),
+    rgba(19, 19, 19, 1) 50%
+  );
+}
+
+.wrapper:has(+ * + * + .selected) {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - var(--image-size));
+  transform: translate3d(-50%, -50%, 0) scale(0);
+  z-index: 0;
+}
+
+.wrapper:has(+ * + .selected) {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - var(--image-size) / 2);
+  transform: translate3d(-50%, -50%, 0) scale(0.8);
+  z-index: 1;
+}
+
+.wrapper:has(+ .selected) {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - var(--image-size) / 4);
+  transform: translate3d(-50%, -50%, 0) scale(0.9);
+  z-index: 2;
+}
+
+.selected {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  z-index: 3;
+}
+
+.selected + .wrapper {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: calc(50% + var(--image-size) / 4);
+  transform: translate3d(-50%, -50%, 0) scale(0.9);
+  z-index: 2;
+}
+
+.selected + * + .wrapper {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: calc(50% + var(--image-size) / 2);
+  transform: translate3d(-50%, -50%, 0) scale(0.8);
+  z-index: 1;
+}
+
+.selected + * + * + .wrapper {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: calc(50% + var(--image-size));
+  transform: translate3d(-50%, -50%, 0) scale(0);
+  z-index: 0;
+}
+
+/* Arrows styling */
+.arrows {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  z-index: 4;
+}
+
+.arrows .left,
+.arrows .right {
+  position: relative;
+  cursor: pointer;
+}
+
+.arrows .left.disabled,
+.arrows .right.disabled {
+  opacity: 0.5;
+}
+
+.arrows .left::before,
+.arrows .right::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 3rem;
+  height: 4px;
+  transform: translateY(-50%);
+}
+
+.arrows .left:before {
+  right: -100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.arrows .right::before {
+  left: -100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1)
+  );
+}
+
+.arrows svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  fill: #fff;
+}
+
+/* Image styling */
+img {
+  border-radius: 6px;
+  width: 100%; /* Adjust width to fill container */
+  max-width: 100%; /* Ensure it doesn't exceed container width */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: contain;
+}
+
+/* Logo styling */
+.logo1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: 100%;
+  /* max-width: 550px; Restrict max width */
+  /* margin: 50px auto; Center horizontally with margin */
+  margin-top: 150px;
+  transition: box-shadow 0.5s ease-out;
+  color: aliceblue;
+  
+}
+
+.logo1 img {
+  height: auto; /* Adjust height based on image aspect ratio */
+  max-height: 150px; /* Restrict max height */
+  transition: filter 0.5s ease-out;
+  filter: drop-shadow(5px 3px 5px rgb(91, 113, 236)); /* More intense glow for the image */
+  margin-top:-70% ;
+}
+
+.logo1:hover {
+  cursor: pointer;
+  /* Apply glow effect to the container */
+  /* box-shadow: 0 0 10px 5px white; */
+}
+.about {
+  color: aliceblue;
+  font-size: 2rem;
+  text-align: center;
+  font-family: 'nexa';
+  text-shadow: 0 0 20px rgba(0, 153, 255, 1), 0 0 30px rgba(0, 153, 255, 0.8), 0 0 40px rgba(0, 153, 255, 0.6);
+  margin-top:-25% ;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .gallery {
+    height: 18rem; /* Adjust gallery height for smaller screens */
+  }
+
+  .wrapper {
+    width: 90%; /* Ensure wrapper fits within smaller screens */
+  }
+
+  .slider {
+    flex-direction: column; /* Stack images vertically on smaller screens */
+  }
+
+  .logo1 {
+    width: 90%; /* Reduce width on smaller screens */
+    margin-top: 20%;
+    align-items: center;
+  }
+
+  .logo1 img {
+    max-height: 120px; /* Adjust image height for smaller screens */
+  }
+}
+@media (max-width: 791px){
+  .margin{
+    margin-top: 10%;
+  }
+}
+@media (max-width: 478px){
+  .margin{
+    margin-top: 20%;
+  }
+}
+@media (max-width: 391px){
+  .margin{
+    margin-top: 30%;
+  }
+  .gallery{
+    margin-top: -30%;
+  }
+}
+@media (max-width: 560px) {
+  .gallery {
+    height: 15rem; /* Further adjust gallery height for very small screens */
+  }
+
+  .arrows svg {
+    width: 2rem; /* Reduce arrow size for smaller screens */
+    height: 2rem;
+  }
+
+  .arrows .left::before,
+  .arrows .right::before {
+    width: 2rem; /* Adjust width of gradient arrows for small screens */
+    height: 3px;
+  }
+
+  .logo1 {
+    width: 100%; /* Full width on very small screens */
+  }
+
+  .logo1 img {
+    max-height: 100px; /* Further reduce image height */
+  }
+}
+@media (max-width: 558px) {
+  .gallery {
+    height: 16rem; /* Further adjust gallery height for very small screens */
+  }
+
+  .arrows svg {
+    width: 2rem; /* Reduce arrow size for smaller screens */
+    height: 2rem;
+  }
+
+  .arrows .left::before,
+  .arrows .right::before {
+    width: 2rem; /* Adjust width of gradient arrows for small screens */
+    height: 3px;
+  }
+
+  .logo1 {
+    width: 100%; /* Full width on very small screens */
+  }
+
+  .logo1 img {
+    max-height: 120px; /* Further reduce image height */
+  }
+}
+
+@media (max-width: 441px) {
+  .gallery {
+    height: 17rem; /* Further adjust gallery height for very small screens */
+  }
+
+  .arrows svg {
+    width: 2rem; /* Reduce arrow size for smaller screens */
+    height: 2rem;
+  }
+
+  .arrows .left::before,
+  .arrows .right::before {
+    width: 2rem; /* Adjust width of gradient arrows for small screens */
+    height: 3px;
+  }
+
+  .logo1 {
+    width: 100%; /* Full width on very small screens */
+  }
+
+  .logo1 img {
+    max-height: 120px; /* Further reduce image height */
+  }
+}
+
+/* Navbar */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=VT323&display=swap');
+
+body {
+    background-color: black;
+    font-family: myFont;
+}
+
+@font-face {
+    font-family: myFont;
+    src: url(TheRiftShop-Yzde4.ttf);  
+}
+
+.navbar-container {
+    display: block;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    align-items: center;
+    background-color: transparent;
+    padding: 10px 20px;
+    font-size: 20px;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 5px;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    position: relative;
+}
+
+.nav-item::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1.5px;
+    background: white;
+    transition: width 0.6s;
+}
+
+.nav-item:hover::after {
+    width: 100%;
+}
+
+.dropdown {
+    overflow: hidden;
+}
+
+.dropdown .dropbtn {
+    font-size: 20px;  
+    border: none;
+    color: white;
+    background-color: inherit;
+    font-family: myFont;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: transparent;
+    min-width: 120px;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #ddd;
+    color: black;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.hamburger .bar {
+    width: 18px;
+    height: 3px;
+    background-color: white;
+}
+
+.hamburger .bar1 {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+}
+
+@media (max-width: 1200px) {
+    .nav-links {
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: auto;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 80px;
+        transform: translateX(100%);
+        transition: transform 0.5s;
+    }
+
+    .nav-links.open {
+        transform: translateX(0);
+    }
+
+    .nav-item {
+        margin: 10px;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 70vh;
+      overflow: scroll;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 80px;
+      transform: translateX(100%);
+      transition: transform 0.5s;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5.7px);
+      -webkit-backdrop-filter: blur(5.7px);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+  }
+}
+
+@media (min-width: 1200px) {
+    .navbar-container {
+        display: none;
+    }
+
+  }
